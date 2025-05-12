@@ -1,54 +1,109 @@
-Email Sender Tool
+# 📬 ThuyNgan Group - Email Sender Tool
 
-Mục đích
+Một ứng dụng Python đơn giản để gửi email hàng loạt từ danh sách trong Excel, với nội dung được cá nhân hóa, giao diện người dùng dễ sử dụng bằng Tkinter và hỗ trợ lưu log gửi vào SQL Server.
 
-Công cụ này giúp gửi email hàng loạt đến danh sách người nhận từ file Excel, nội dung có thể cá nhân hóa bằng tên từng người. Giao diện đơn giản, dễ dùng với khả năng lưu lịch sử gửi vào cơ sở dữ liệu SQL Server.
+---
 
-Thành phần hệ thống
+## 📌 Mục đích
+- Gửi email hàng loạt từ danh sách có sẵn.
+- Cá nhân hoá nội dung theo tên người nhận.
+- Giao diện người dùng đơn giản.
+- Ghi lại lịch sử gửi email vào cơ sở dữ liệu.
 
-gui.py: Giao diện người dùng bằng Tkinter để nhập tiêu đề và nội dung email.
+---
 
-main.py: Xử lý logic gửi email, kết nối SMTP, đọc file Excel, ghi log vào database.
+## 📁 Cấu trúc hệ thống
 
-.env: Lưu thông tin bảo mật như email người gửi và mật khẩu ứng dụng.
+| Tên tệp           | Mô tả                                                                 |
+|-------------------|----------------------------------------------------------------------|
+| `gui.py`          | Giao diện người dùng với Tkinter để nhập tiêu đề, nội dung và gửi    |
+| `main.py`         | Xử lý gửi email, đọc file Excel, ghi log vào SQL Server              |
+| `.env`            | Lưu thông tin bảo mật: email người gửi và mật khẩu ứng dụng          |
+| `email_list.xlsx` | Danh sách người nhận (cột: `Name`, `Email`)                          |
+| `sendmail.py`     | Tệp không liên quan đến tính năng gửi email chính                    |
 
-email_list.xlsx: Danh sách người nhận email (gồm cột "Name" và "Email").
+---
 
-sendmail.py: Không liên quan đến tính năng gửi email chính.
+## ⚙️ Cài đặt
 
-Hướng dẫn sử dụng
+1. Cài Python 3 nếu chưa có.
+2. Cài thư viện phụ thuộc:
+```bash
+pip install pandas openpyxl python-dotenv
+```
 
-1. Chuẩn bị
-
-Tạo file .env:
-
+3. Tạo file `.env` trong cùng thư mục:
+```env
 EMAIL_SENDER=your_email@gmail.com
 EMAIL_PASSWORD=your_app_password
+```
 
-Chuẩn bị file email_list.xlsx với hai cột: Name và Email.
+4. Đảm bảo có file `email_list.xlsx` với hai cột:
+   - `Name`
+   - `Email`
 
-Đảm bảo máy tính đã cài Python và các thư viện sau:
+---
 
-pip install pandas python-dotenv openpyxl
+## 🚀 Sử dụng
 
-2. Chạy ứng dụng
-
+### 1. Chạy giao diện người dùng:
+```bash
 python gui.py
+```
 
-3. Giao diện sử dụng
+### 2. Nhập thông tin:
+- **Title**: Tiêu đề email (có thể dùng `{name}` để cá nhân hóa)
+- **Content**: Nội dung email (dùng `{name}` để chèn tên người nhận)
 
-Nhập Title (tiêu đề email).
+📌 *Ví dụ cá nhân hóa:*
+```
+Tiêu đề: Thông báo dành cho {name}
+Nội dung: Xin chào {name}, cảm ơn bạn đã đồng hành cùng ThuyNgan Group!
+```
 
-Nhập Content (nội dung email). Có thể dùng {name} để cá nhân hoá.
+### 3. Nhấn "Send Mail"
+- Email sẽ được gửi lần lượt đến từng người trong danh sách.
+- Mỗi lần gửi cách nhau 3–6 giây để tránh spam.
 
-Nhấn nút Send Mail để gửi.
+---
 
-Ví dụ:
+## 🗂 File Excel cần đặt tại:
+```
+C:/Users/admin/OneDrive/Documents/python_self/mail/email_list.xlsx
+```
+> *Có thể thay đổi đường dẫn trong file `gui.py` nếu cần.*
 
-Title: Hello {name}!
+---
 
-Content: Chúng tôi xin gửi tới bạn, {name}, thông báo mới nhất từ ThuyNgan Group.
+## 🧾 Ghi lịch sử gửi
 
-4. Ghi log
+Lưu vào SQL Server với bảng `EmailLog`, gồm:
+- Email
+- Trạng thái
+- Tiêu đề
+- Nội dung
+- Thời gian gửi
 
-Thông tin gửi sẽ được lưu vào bảng EmailLog trong database SQL Server EmailSenderDB.
+Kết nối cấu hình sẵn trong `main.py`:
+```python
+Driver={ODBC Driver 17 for SQL Server};
+Server=THUYNGAN47\\SQLEXPRESS;
+Database=EmailSenderDB;
+UID=py102;
+PWD=123;
+```
+> Bạn có thể sửa để phù hợp với cấu hình riêng của bạn.
+
+---
+
+## 🔒 Bảo mật
+
+- KHÔNG chia sẻ file `.env` công khai.
+- Sử dụng [App Password của Gmail](https://support.google.com/accounts/answer/185833?hl=vi) thay vì mật khẩu tài khoản chính.
+
+---
+
+## 📮 Liên hệ
+
+Mọi góp ý, hỗ trợ xin gửi về:  
+📧 [nguyenthuyngan047@gmail.com](mailto:nguyenthuyngan047@gmail.com)
